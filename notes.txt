@@ -1,0 +1,9 @@
+set JWT_SECRET='myjwtsecret'
+
+set LOG_LEVEL=DEBUG
+
+$TOKEN = (Invoke-RestMethod -Uri "http://localhost:8080/auth" -Method Post -Body '{"email":"abc@xyz.com","password":"mypwd"}' -ContentType "application/json").token
+
+Invoke-RestMethod -Uri "http://localhost:8080/contents" -Headers @{"Authorization" = "Bearer $TOKEN"} | jq
+
+(Invoke-RestMethod -Uri "http://localhost:8080/contents" -Headers @{"Authorization" = "Bearer $TOKEN"}) | ConvertTo-Json | Write-Host
